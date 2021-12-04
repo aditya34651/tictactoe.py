@@ -2,6 +2,7 @@ board = {1: ' ', 2: ' ', 3: ' ',
          4: ' ', 5: ' ', 6: ' ',
          7: ' ', 8: ' ', 9: ' '}
 
+
 def printBoard(board):
     print(board[1] + '|' + board[2] + '|' + board[3])
     print('-+-+-')
@@ -23,7 +24,7 @@ def insertLetter(letter, position):
         board[position] = letter
         printBoard(board)
 
-        if checkForWin():
+        if checkForWin(board):
             if letter == 'X':
                 print("Bot wins! You Loser Cunt!!!!")
                 exit()
@@ -44,46 +45,33 @@ def insertLetter(letter, position):
         return
 
 
-def checkForWin():
-    if (board[1] == board[2] and board[1] == board[3] and board[1] != ' '):
-        return True
-    elif (board[4] == board[5] and board[4] == board[6] and board[4] != ' '):
-        return True
-    elif (board[7] == board[8] and board[7] == board[9] and board[7] != ' '):
-        return True
-    elif (board[1] == board[4] and board[1] == board[7] and board[1] != ' '):
-        return True
-    elif (board[2] == board[5] and board[2] == board[8] and board[2] != ' '):
-        return True
-    elif (board[3] == board[6] and board[3] == board[9] and board[3] != ' '):
-        return True
-    elif (board[1] == board[5] and board[1] == board[9] and board[1] != ' '):
-        return True
-    elif (board[7] == board[5] and board[7] == board[3] and board[7] != ' '):
-        return True
-    else:
-        return False
+def checkForWin(v):
+   winning_rows = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 5, 9], [3, 5, 7], [1, 4, 7], [2, 5, 8], [3, 6, 9]]
+    for row in winning_rows:
+        i = row[0]
+        j = row[1]
+        k = row[2]
+        if v[i] == v[j] == v[k] == "O":
+            return True
+            break
+        elif v[i] == v[j] == v[k] == "X":
+            return True
+            break
+        else:
+            continue
 
 
-def checkWhichMarkWon(mark):
-    if board[1] == board[2] and board[1] == board[3] and board[1] == mark:
-        return True
-    elif (board[4] == board[5] and board[4] == board[6] and board[4] == mark):
-        return True
-    elif (board[7] == board[8] and board[7] == board[9] and board[7] == mark):
-        return True
-    elif (board[1] == board[4] and board[1] == board[7] and board[1] == mark):
-        return True
-    elif (board[2] == board[5] and board[2] == board[8] and board[2] == mark):
-        return True
-    elif (board[3] == board[6] and board[3] == board[9] and board[3] == mark):
-        return True
-    elif (board[1] == board[5] and board[1] == board[9] and board[1] == mark):
-        return True
-    elif (board[7] == board[5] and board[7] == board[3] and board[7] == mark):
-        return True
-    else:
-        return False
+def checkWhichMarkWon(v,mark):
+    winning_rows = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 5, 9], [3, 5, 7], [1, 4, 7], [2, 5, 8], [3, 6, 9]]
+    for row in winning_rows:
+        i = row[0]
+        j = row[1]
+        k = row[2]
+        if v[i] == v[j] == v[k] == mark:
+            return True
+            break
+        else:
+            continue
 
 
 def checkDraw():
@@ -116,9 +104,9 @@ def compMove():
 
 
 def minimax(board, depth, isMaximizing):
-    if (checkWhichMarkWon(bot)):
+    if (checkWhichMarkWon(board,bot)):
         return 1
-    elif (checkWhichMarkWon(player)):
+    elif (checkWhichMarkWon(board,player)):
         return -1
     elif (checkDraw()):
         return 0
@@ -160,10 +148,9 @@ print("\n")
 player = 'O'
 bot = 'X'
 
-
 global firstComputerMove
 firstComputerMove = True
 
-while not checkForWin():
+while not checkForWin(board):
     compMove()
     playerMove()
